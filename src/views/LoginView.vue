@@ -78,9 +78,11 @@ const submitForm = async (formEl) => {
   background-color: $Shark;
   &__logo {
     color: #fff;
-    padding: 12px;
+    padding: 20px;
     display: flex;
     align-items: center;
+    user-select: none;
+    pointer-events: none;
     span {
       font-size: 20px;
       font-weight: 700;
