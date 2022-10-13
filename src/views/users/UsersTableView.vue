@@ -6,6 +6,7 @@ import { UserAPI } from "@/api/user"
 
 import TheHeader from "@/components/TheHeader.vue"
 import VUsersTable from "@/components/VUsersTable.vue";
+import { ElMessage } from "element-plus";
 
 const tableHeadline = ['Ник', "Имя", "Отчество", "Роль"]
 
@@ -13,7 +14,7 @@ let tableData = ref([])
 
 async function requestUsers() {
    const res = await RequestAPI.users()
-   tableData.value = res.data
+   tableData.value = res.data.users
 }
 
 const dialogVisible = ref(false)
@@ -32,12 +33,10 @@ async function editUser(userId) {
       transferData.value.push(...data.inclusiveInformation)
       for (let item of data.inclusiveInformation) transferValue.value.push(item.key)
    }
-
    dialogVisible.value = true
 }
 
 const editUserGroups = (value, direct, items) => {
-   console.log(direct);
    switch (direct) {
       case 'right':
          for (let id of items)
@@ -56,6 +55,17 @@ const editUserGroups = (value, direct, items) => {
    }
 }
 
+const deleteUser = async () => {
+   await UserAPI.delete(JSON.stringify({ userId: currentUserId.value }))
+   ElMessage({
+      message: 'Пользователь удалён',
+      type: 'success'
+   })
+   dialogVisible.value = false
+   tableData.value = []
+   requestUsers()
+}
+
 requestUsers()
 </script>
 
@@ -68,9 +78,14 @@ requestUsers()
       <el-footer class="users-table">
       </el-footer>
    </el-container>
-   <el-dialog class="user-transfer" v-model="dialogVisible" title="Редактирование групп" width="32%">
+   <el-dialog class="user-transfer" v-model="dialogVisible" title="Редактирование" width="32%">
       <el-transfer v-model="transferValue" :data="transferData" :titles="['Неактивные','Активные']"
          @change="editUserGroups" />
+      <template #footer>
+         <el-button class="user-transfer__delete" type="danger" size="default" plain @click="deleteUser()">Удалить
+            пользователя
+         </el-button>
+      </template>
    </el-dialog>
 </template>
 
@@ -119,7 +134,16 @@ requestUsers()
             border: none;
          }
 
+         &__empty {
+            display: none;
+         }
       }
+   }
+
+   &__delete {
+      color: #fff;
+      background-color: transparent;
+      margin-right: 13px;
    }
 
    .el-checkbox__label {

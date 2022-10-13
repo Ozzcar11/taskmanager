@@ -1,10 +1,13 @@
 <script setup>
-import { ref, onMounted, watch } from "vue"
+import { ref, watch } from "vue"
 
 import TheHeader from "@/components/TheHeader.vue"
 import VProblemsTable from "@/components/VProblemsTable.vue"
 import AppFilter from "@/components/App/AppFilter.vue"
 import { RequestAPI } from "@/api/request"
+import { useNotificationStore } from '@/stores/notification'
+
+const notificationStore = useNotificationStore()
 
 const tableHeadline = ["Host", "Hostname", "Problem", "Status", "Age", "Date"]
 
@@ -26,11 +29,29 @@ async function requestProblems() {
       JSON.stringify(requestDate.value)
    )
    const data = res.data
+   const lastEl = data.problemsInformation.at(-1)
    countAll.value = data.counts
    tableData.value.push(...data.problemsInformation)
-   requestDate.value.createDate = data.problemsInformation.at(-1)?.createDate
-   requestDate.value.problemId = data.problemsInformation.at(-1)?.id
+   requestDate.value.createDate = lastEl?.createDate
+   requestDate.value.problemId = lastEl?.id
 }
+
+watch(() => notificationStore.getWsData, (value) => {
+   switch (value.socketType) {
+      case 7:
+         tableData.value.unshift(value)
+         break
+      case 8:
+         tableData.value = tableData.value.filter(item => item.id !== value.id)
+         tableData.value.unshift(value)
+         break
+      case 9:
+         tableData.value = tableData.value.filter(item => item.id !== value.id)
+         break
+   }
+}, { deep: true })
+
+
 
 watch(filterStatus, value => {
    if (value === requestDate.value.status) return
@@ -44,11 +65,30 @@ watch(filterStatus, value => {
    }
    requestProblems()
 })
+
+async function searchProblems(search) {
+   if (search === '') {
+      tableData.value = []
+      requestDate.value = {
+         createDate: 0,
+         limit: 30,
+         status: filterStatus.value,
+         problemId: 0
+      }
+      requestProblems()
+      return
+   }
+   const res = await RequestAPI.search(JSON.stringify({
+      status: requestDate.value.status,
+      search
+   }))
+   tableData.value = [...res.data.problemsInformation]
+}
 </script>
 
 <template>
    <el-container>
-      <TheHeader />
+      <TheHeader @searchProblems="searchProblems" />
       <el-main style="padding: 0">
          <VProblemsTable :tableHeadline="tableHeadline" :tableData="tableData" @lazyLoad="requestProblems" />
       </el-main>

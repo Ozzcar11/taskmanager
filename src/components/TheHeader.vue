@@ -1,23 +1,43 @@
 <script setup>
-import { ref } from "vue"
+import { ref, watch } from 'vue'
 import { Search } from "@element-plus/icons-vue"
 import { RouterLink } from "vue-router"
+import { useNotificationStore } from '@/stores/notification'
+
+const emit = defineEmits()
 
 const props = defineProps({
    create: Boolean,
 })
 
-const search = ref("")
+const notificationStore = useNotificationStore()
 
+const notification = ref(true)
+
+watch(notification, (val) => {
+   notificationStore.setNotificationStatus(val)
+})
+
+const search = ref('')
+
+watch(search, (val) => {
+   notification.value = val === ''
+})
 </script>
 
 <template>
    <el-header class="header">
       <div class="header__container">
-         <el-input v-model="search" class="header__search" placeholder="Поиск" :prefix-icon="Search" />
-         <el-button v-if="!props.create" class="header__notification">
-            <img src="../assets/icons/notification.svg" alt="" />
-         </el-button>
+         <template v-if="!props.create">
+            <el-input v-model="search" @input="emit('searchProblems', search)" class="header__search"
+               placeholder="Поиск" :prefix-icon="Search" />
+            <el-button class="header__notification" @click="notification = !notification">
+               <el-icon size="20px">
+                  <Bell v-if="notification" />
+                  <MuteNotification v-else />
+               </el-icon>
+            </el-button>
+         </template>
          <RouterLink class="header__create" v-else to="/create-user">
             <el-button>
                <el-icon style="margin-right: 5px
@@ -36,13 +56,22 @@ const search = ref("")
 
    &__container {
       display: flex;
+      justify-content: flex-end;
       align-items: center;
-      max-width: 350px;
       margin: 10px 0px 10px auto;
    }
 
    &__search {
+      width: 290px;
       margin-right: 20px;
+
+      input {
+         color: #fff;
+      }
+
+      &::placeholder {
+         color: $CodGray;
+      }
 
       .el-input__wrapper {
          padding: 3px 11px;
@@ -66,6 +95,10 @@ const search = ref("")
       background-color: $Shark;
       border: none;
       box-sizing: content-box;
+
+      span {
+         pointer-events: none;
+      }
    }
 
    &__create {

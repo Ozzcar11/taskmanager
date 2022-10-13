@@ -14,7 +14,7 @@ const groups = ref([])
 
 const requestGroups = async () => {
    const res = await GroupAPI.allGroups()
-   groups.value.push(...res.data)
+   groups.value.push(...res.data.hostGroups)
 }
 
 const handleAddGroup = async () => {

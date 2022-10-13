@@ -10,7 +10,10 @@ export const RequestAPI = {
   scrollProblems(body) {
     return DefaultAPIInstance.post("/problems/scrolling", body)
   },
-   users(body) {
+  users(body) {
     return DefaultAPIInstance.post("/users/show", body)
   },
+  search(body) {
+    return DefaultAPIInstance.post("/problems/search", body)
+  }
 }

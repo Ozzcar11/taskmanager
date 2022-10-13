@@ -9,12 +9,12 @@ const props = defineProps({
 </script>
 
 <template>
-   <el-table class="main-table" :data="props.tableData" style="width: 100%; height: 100%;" table-layout="auto"
-      v-el-table-infinite-scroll="() => $emit('lazyLoad')">
-      <el-table-column prop="username" label="Ник" />
-      <el-table-column prop="name" label="Имя" />
-      <el-table-column prop="middleName" label="Отчество" />
-      <el-table-column prop="role" label="Роль">
+   <el-table class="main-table" :data="props.tableData" empty-text="No such information"
+      style="width: 100%; height: 100%;" table-layout="auto" v-el-table-infinite-scroll="() => $emit('lazyLoad')">
+      <el-table-column prop="username" label="Username" />
+      <el-table-column prop="name" label="Name" />
+      <el-table-column prop="middleName" label="Middlename" />
+      <el-table-column prop="role" label="Role">
          <template #default="scope">
             {{ getStringRole(scope.row.role) }}
          </template>

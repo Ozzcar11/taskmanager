@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, watch } from 'vue'
 import { useAuthStore } from '@/stores/login';
 import { useRoute } from 'vue-router';
 
@@ -10,7 +10,39 @@ const props = defineProps({
 const route = useRoute()
 const authStore = useAuthStore()
 
-const menuItems = [
+// const menuItems = [
+//    {
+//       id: '1',
+//       name: 'Таблица',
+//       icon: 'Grid',
+//       route: '/',
+//       enableFor: ["Администратор", "Пользователь"]
+//    },
+//    {
+//       id: '2',
+//       name: 'Пользователи',
+//       icon: 'UserFilled',
+//       route: '/users',
+//       enableFor: ["Администратор"]
+//    },
+//    {
+//       id: '3',
+//       name: 'Группы',
+//       icon: 'Operation',
+//       route: '/groups',
+//       enableFor: ["Администратор"]
+//    },
+// ]
+
+// const available = computed(() => {
+//    const userRole = authStore.getRole
+//    const filteredMenuItems = menuItems.filter(filterItem => filterItem.enableFor.find(item => item == userRole))
+//    return filteredMenuItems
+// })
+
+const userRole = ref(authStore.getRole)
+
+const available = ref([
    {
       id: '1',
       name: 'Таблица',
@@ -32,12 +64,10 @@ const menuItems = [
       route: '/groups',
       enableFor: ["Администратор"]
    },
-]
+])
 
-const available = computed(() => {
-   const userRole = authStore.getRole
-   const filteredMenuItems = menuItems.filter(filterItem => filterItem.enableFor.find(item => item == userRole))
-   return filteredMenuItems
+watch(userRole, () => {
+   available.value = available.value.filter(filterItem => filterItem.enableFor.find(item => item == userRole))
 })
 </script>
 

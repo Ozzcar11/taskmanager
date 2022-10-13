@@ -1,6 +1,9 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import { RequestAPI } from "../../api/request"
+import { useNotificationStore } from '@/stores/notification'
+
+const notificationStore = useNotificationStore()
 
 const emit = defineEmits()
 
@@ -13,6 +16,7 @@ async function getProblems() {
 
 function emitStatusAndRefreshTable(status) {
    emit("update:modelValue", status)
+   notificationStore.setFilterStatus(status)
 }
 
 onMounted(() => {
