@@ -5,8 +5,14 @@ export function formatDate(date) {
 }
 
 export function formatResolvedDate(createDate, resolvedDate) {
-   if (!resolvedDate) return dayjs(dayjs().diff(createDate)).format('D [d.] HH:mm:ss')
-   return dayjs(dayjs.unix(resolvedDate).diff(dayjs.unix(createDate))).format('D [d.] HH:mm:ss')
+   if (resolvedDate === null) {
+      let res = dayjs(dayjs().diff(dayjs(createDate * 1000)) - 10800000)
+      return `${res.format('D') - 1 ? res.format('D') - 1 + ' d. ' : ''} ${res.format('HH:mm:ss')}`
+   }
+   else { 
+      let res = dayjs(dayjs(resolvedDate * 1000).diff(dayjs(createDate * 1000)) - 10800000)
+      return `${res.format('D') - 1 ? res.format('D') - 1 + ' d. ' : ''} ${res.format('HH:mm:ss')}`
+   }
 }
 
 export function formatTimeDate(date) {

@@ -40,7 +40,7 @@ const authStore = useAuthStore()
 //    return filteredMenuItems
 // })
 
-const userRole = ref(authStore.getRole)
+let userRole = ref(authStore.getRole)
 
 const available = ref([
    {
@@ -66,9 +66,10 @@ const available = ref([
    },
 ])
 
-watch(userRole, () => {
-   available.value = available.value.filter(filterItem => filterItem.enableFor.find(item => item == userRole))
-})
+function avaibleRoles() {
+   available.value = available.value.filter(filterItem => filterItem.enableFor.find(item => item == userRole.value))
+}
+avaibleRoles()
 </script>
 
 <template>

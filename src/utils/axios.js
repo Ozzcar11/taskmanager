@@ -24,7 +24,7 @@ DefaultAPIInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
    const errorCode = error.response.data.code
-    if (errorCode === 14 || errorCode === 15) {
+    if (errorCode === 44 || errorCode === 45) {
       const authStore = useAuthStore()
       authStore.token = ''
       authStore.logout()

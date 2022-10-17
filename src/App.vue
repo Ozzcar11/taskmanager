@@ -1,12 +1,17 @@
 <script setup>
-import { RouterView } from "vue-router"
+import { RouterView, useRoute } from "vue-router"
 import { soketInstance } from '@/utils/socketio'
 import { useNotificationStore } from '@/stores/notification'
+import { useFiltersStore } from '@/stores/statusFilter'
 import { ElNotification } from 'element-plus'
 import { getStringStatus } from '@/utils/getStringStatus'
 import { formatTimeDate, formatDaysDate } from '@/utils/formatDate'
+import { RequestAPI } from '@/api/request'
 
 const notificationStore = useNotificationStore()
+const filterStore = useFiltersStore()
+
+const route = useRoute()
 
 const notifHTML = (data) => {
    return `<div class="notification">
@@ -22,10 +27,12 @@ const notifHTML = (data) => {
    </div>`
 }
 
-soketInstance.on("notification", (data) => {
+soketInstance.on("notification", async (data) => {
    if (notificationStore.getFilterStatus === data.status || notificationStore.getFilterStatus == 0) {
       notificationStore.setWsData(data)
-      if (notificationStore.getNotificationStatus) {
+      const res = await RequestAPI.countProblems()
+      filterStore.setFilter(res.data)
+      if (notificationStore.getNotificationStatus && data.socketType !== 3 && route.path === '/') {
          ElNotification({
             dangerouslyUseHTMLString: true,
             message: notifHTML(data),

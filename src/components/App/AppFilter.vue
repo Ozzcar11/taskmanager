@@ -1,17 +1,21 @@
 <script setup>
-import { ref, onMounted } from "vue"
+import { onMounted, computed } from "vue"
 import { RequestAPI } from "../../api/request"
 import { useNotificationStore } from '@/stores/notification'
+import { useFiltersStore } from '@/stores/statusFilter'
 
 const notificationStore = useNotificationStore()
+const filterStore = useFiltersStore()
 
 const emit = defineEmits()
 
-const allProblems = ref({})
+let allProblems = computed(() => {
+   return filterStore.getFilters
+})
 
 async function getProblems() {
    const res = await RequestAPI.countProblems()
-   allProblems.value = res.data
+   filterStore.setFilter(res.data)
 }
 
 function emitStatusAndRefreshTable(status) {

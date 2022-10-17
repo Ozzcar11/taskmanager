@@ -9,7 +9,7 @@ const props = defineProps({
    tableData: Array,
 })
 function getBitrixHref(item) {
-   if (!item) return 'https://bitrix24.ellcom.ru/company/personal/user/0/tasks/task/edit/0/'
+   if (!item[0]) return 'https://bitrix24.ellcom.ru/company/personal/user/0/tasks/task/edit/0/'
    return `https://bitrix24.ellcom.ru/company/personal/user/45354/tasks/task/view/${item[0]}/`
 }
 </script>
@@ -57,7 +57,7 @@ function getBitrixHref(item) {
             <el-tooltip v-if="scope.row.bitrixId?.[1]" class="box-item" effect="dark" content="Top Left prompts info"
                placement="bottom" trigger="click">
                <template #content>
-                  <a v-for="(item, index) in scope.row.bitrixId" :key="index" class="tool-tip__id"
+                  <a v-for="(item, index) in scope.row.bitrixId?.[1]" :key="index" class="tool-tip__id"
                      :href="`https://bitrix24.ellcom.ru/company/personal/user/45354/tasks/task/view/${item}/`"
                      target="_blank">
                      {{ item }}

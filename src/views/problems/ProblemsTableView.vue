@@ -24,11 +24,11 @@ let tableData = ref([])
 let countAll = ref(1)
 
 async function requestProblems() {
-   if (countAll.value === null) return
    const res = await RequestAPI.scrollProblems(
       JSON.stringify(requestDate.value)
    )
    const data = res.data
+   if (data.counts === null) return
    const lastEl = data.problemsInformation.at(-1)
    countAll.value = data.counts
    tableData.value.push(...data.problemsInformation)
@@ -37,21 +37,21 @@ async function requestProblems() {
 }
 
 watch(() => notificationStore.getWsData, (value) => {
+   console.log(value);
    switch (value.socketType) {
-      case 7:
-         tableData.value.unshift(value)
+      case 1:
+         tableData.value = []
+         requestProblems()
          break
-      case 8:
+      case 2:
          tableData.value = tableData.value.filter(item => item.id !== value.id)
          tableData.value.unshift(value)
          break
-      case 9:
+      case 3:
          tableData.value = tableData.value.filter(item => item.id !== value.id)
          break
    }
 }, { deep: true })
-
-
 
 watch(filterStatus, value => {
    if (value === requestDate.value.status) return
