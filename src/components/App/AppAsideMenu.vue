@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useAuthStore } from '@/stores/login';
 import { useRoute } from 'vue-router';
 
@@ -40,7 +40,7 @@ const authStore = useAuthStore()
 //    return filteredMenuItems
 // })
 
-let userRole = ref(authStore.getRole)
+let userRole = computed(() => authStore.getRole) 
 
 const available = ref([
    {
@@ -66,10 +66,9 @@ const available = ref([
    },
 ])
 
-function avaibleRoles() {
+watch(userRole, () => {
    available.value = available.value.filter(filterItem => filterItem.enableFor.find(item => item == userRole.value))
-}
-avaibleRoles()
+})
 </script>
 
 <template>

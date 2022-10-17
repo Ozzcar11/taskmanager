@@ -1,105 +1,123 @@
 <script setup>
-import { RouterView, useRoute } from "vue-router"
-import { soketInstance } from '@/utils/socketio'
-import { useNotificationStore } from '@/stores/notification'
-import { useFiltersStore } from '@/stores/statusFilter'
-import { ElNotification } from 'element-plus'
-import { getStringStatus } from '@/utils/getStringStatus'
-import { formatTimeDate, formatDaysDate } from '@/utils/formatDate'
-import { RequestAPI } from '@/api/request'
+import { RouterView, useRoute } from "vue-router";
+import { soketInstance } from "@/utils/socketio";
+import { useNotificationStore } from "@/stores/notification";
+import { useFiltersStore } from "@/stores/statusFilter";
+import { ElNotification } from "element-plus";
+import { getStringStatus } from "@/utils/getStringStatus";
+import { formatTimeDate, formatDaysDate } from "@/utils/formatDate";
+import { RequestAPI } from "@/api/request";
 
-const notificationStore = useNotificationStore()
-const filterStore = useFiltersStore()
+const notificationStore = useNotificationStore();
+const filterStore = useFiltersStore();
 
-const route = useRoute()
+const route = useRoute();
 
 const notifHTML = (data) => {
-   return `<div class="notification">
+  return `<div class="notification">
        <div class="notification__header">
           <img src="/src/assets/icons/${getStringStatus(data.status)}.svg" />
-          <span class="${getStringStatus(data.status)}">${getStringStatus(data.status)}</span>
+          <span class="${getStringStatus(data.status)}">${getStringStatus(
+    data.status
+  )}</span>
        </div>
        <div class="notification__body">
-         <p>Problem ${data.status == 3 ? `resolved at ${formatTimeDate(data.resolvedDate)} on ${formatDaysDate(data.resolvedDate)}` : `started at ${formatTimeDate(data.createDate)} on ${formatDaysDate(data.createDate)}`}</p>
+         <p>Problem ${
+           data.status == 3
+             ? `resolved at ${formatTimeDate(
+                 data.resolvedDate
+               )} on ${formatDaysDate(data.resolvedDate)}`
+             : `started at ${formatTimeDate(
+                 data.createDate
+               )} on ${formatDaysDate(data.createDate)}`
+         }</p>
          <p>Host ${data.host}</p>
          <p>Hostname ${data.hostname}</p>
        </div>
-   </div>`
-}
+   </div>`;
+};
 
 soketInstance.on("notification", async (data) => {
-   if (notificationStore.getFilterStatus === data.status || notificationStore.getFilterStatus == 0) {
-      notificationStore.setWsData(data)
-      const res = await RequestAPI.countProblems()
-      filterStore.setFilter(res.data)
-      if (notificationStore.getNotificationStatus && data.socketType !== 3 && route.path === '/') {
-         ElNotification({
-            dangerouslyUseHTMLString: true,
-            message: notifHTML(data),
-            position: 'bottom-right',
-            offset: 50
-         })
-      }
-   }
-})
-
+  if (
+    notificationStore.getFilterStatus === data.status ||
+    notificationStore.getFilterStatus == 0
+  ) {
+    notificationStore.setWsData(data);
+    filterStore.setFilter({
+      total: data.total,
+      success: data.success,
+      warning: data.warning,
+      error: data.error,
+    });
+    if (
+      notificationStore.getNotificationStatus &&
+      data.socketType !== 3 &&
+      route.path === "/"
+    ) {
+      ElNotification({
+        dangerouslyUseHTMLString: true,
+        message: notifHTML(data),
+        position: "bottom-right",
+        offset: 50,
+      });
+    }
+  }
+});
 </script>
 
 <template>
-   <RouterView />
+  <RouterView />
 </template>
 
 <style lang="scss">
 body {
-   font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif;
 }
 
 .el-notification {
-   color: #fff;
-   background-color: $Tuna;
-   border: none;
+  color: #fff;
+  background-color: $Tuna;
+  border: none;
 
-   .notification {
-      color: #fff;
+  .notification {
+    color: #fff;
 
-      &__header {
-         font-size: 16px;
-         font-weight: 700;
-         display: flex;
-         align-items: center;
-         margin-bottom: 5px;
-
-         span {
-            margin: 2px 0px 0px 10px;
-            text-transform: capitalize;
-         }
-      }
+    &__header {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
 
       span {
-         &.error {
-            color: rgb(226, 85, 85);
-         }
+        margin: 2px 0px 0px 10px;
+        text-transform: capitalize;
+      }
+    }
 
-         &.warning {
-            color: rgb(223, 193, 26);
-         }
-
-         &.success {
-            color: rgb(64, 206, 64);
-         }
+    span {
+      &.error {
+        color: rgb(226, 85, 85);
       }
 
-
-
-      &__body {
-         width: 290px;
-
-         p {
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-         }
+      &.warning {
+        color: rgb(223, 193, 26);
       }
-   }
+
+      &.success {
+        color: rgb(64, 206, 64);
+      }
+    }
+
+    &__body {
+      width: 290px;
+
+      p {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
+  }
 }
 </style>
