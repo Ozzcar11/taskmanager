@@ -31,19 +31,19 @@ onMounted(() => {
 <template>
    <div class="filter">
       <el-button @click="emitStatusAndRefreshTable(0)">
-         <img src="/src/assets/icons/allcount.svg" />
+         <img src="@/assets/icons/allcount.svg" />
          <span style="margin-left: 10px">{{ allProblems.total }}</span>
       </el-button>
       <el-button @click="emitStatusAndRefreshTable(3)">
-         <img src="/src/assets/icons/success.svg" />
+         <img src="@/assets/icons/success.svg" />
          <span style="margin-left: 10px">{{ allProblems.success }}</span>
       </el-button>
       <el-button @click="emitStatusAndRefreshTable(2)">
-         <img src="/src/assets/icons/warning.svg" />
+         <img src="@/assets/icons/warning.svg" />
          <span style="margin-left: 10px">{{ allProblems.warning }}</span>
       </el-button>
       <el-button @click="emitStatusAndRefreshTable(1)">
-         <img src="/src/assets/icons/error.svg" />
+         <img src="@/assets/icons/error.svg" />
          <span style="margin-left: 10px">{{ allProblems.error }}</span>
       </el-button>
    </div>

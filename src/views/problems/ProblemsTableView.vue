@@ -37,7 +37,6 @@ async function requestProblems() {
 }
 
 watch(() => notificationStore.getWsData, (value) => {
-   console.log(value);
    switch (value.socketType) {
       case 1:
          tableData.value = []

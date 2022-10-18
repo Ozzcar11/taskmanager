@@ -2,6 +2,7 @@
 import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
 import { formatDate, formatResolvedDate } from '@/utils/formatDate'
 import { getStringStatus } from '@/utils/getStringStatus'
+import { fileNameHandler } from '@/utils/fileNameURl'
 import BaseCopyButton from "./Base/BaseCopyButton.vue"
 
 const props = defineProps({
@@ -35,7 +36,7 @@ function getBitrixHref(item) {
       <el-table-column prop="status" label="Status">
          <template #default="scope">
             <div class="main-table__btn-container">
-               <img :src="`/src/assets/icons/${getStringStatus(scope.row.status)}.svg`" />
+               <img :src="fileNameHandler(getStringStatus(scope.row.status))" />
                <span class="main-table__status" :class="getStringStatus(scope.row.status)">
                   {{ getStringStatus(scope.row.status) }}
                </span>
@@ -64,12 +65,12 @@ function getBitrixHref(item) {
                   </a>
                </template>
                <el-button class="main-table__bitrix-btn">
-                  <img src="/src/assets/icons/share.svg" />
+                  <img src="../assets/icons/share.svg" />
                </el-button>
             </el-tooltip>
             <a v-else class="el-button main-table__bitrix-btn" :href="getBitrixHref(scope.row.bitrixId)"
                target="_blank">
-               <img src="/src/assets/icons/share.svg" />
+               <img src="../assets/icons/share.svg" />
             </a>
          </template>
       </el-table-column>
@@ -86,7 +87,7 @@ function getBitrixHref(item) {
    thead .el-table__cell {
       color: $Picton;
       font-weight: 700;
-      background-color: $CodGray;
+      background-color: $CodGray !important;
    }
 
    .el-table__cell {

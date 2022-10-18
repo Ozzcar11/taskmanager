@@ -53,7 +53,7 @@ requestProfile()
       }
    }
 
-   &__exit {
+   &__exit.el-button {
       padding: 18px 30px;
       background-color: $Abbey;
       border: none;

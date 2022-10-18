@@ -15,7 +15,7 @@ const isCollapse = ref(false)
          <AppLogo :isCollapse="isCollapse" />
          <AppAsideMenu :isCollapse="isCollapse" />
          <AppAsideFooter :isCollapse="isCollapse" />
-         <el-button class="aside__collapse-btn" @click="isCollapse = !isCollapse">
+         <el-button class="aside__collapse-btn aside__button" @click="isCollapse = !isCollapse">
             <img src="../assets/icons/arrow.svg" alt="" />
          </el-button>
       </el-aside>
@@ -31,18 +31,18 @@ body {
 .aside {
    position: relative;
    background-color: $Tuna;
-   overflow: visible;
+   overflow: visible !important;
    transition: 0.3s var(--el-transition-function-ease-in-out-bezier);
 
    &__collapsed {
-      width: 80px;
+      width: 80px !important;
 
       .aside__collapse-btn span {
          transform: translate(2px) rotate(180deg);
       }
    }
 
-   &__collapse-btn {
+   &__collapse-btn.aside__button {
       position: absolute;
       top: 50%;
       right: 0;
@@ -52,7 +52,7 @@ body {
       border: 5px solid $Shark;
       border-radius: 50%;
       background-color: $Picton;
-      z-index: 2;
+      z-index: 20;
    }
 }
 

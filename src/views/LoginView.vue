@@ -44,7 +44,7 @@ const submitForm = async (formEl) => {
 <template>
    <div class="login">
       <div class="login__logo">
-         <img src="../assets/images/EllcoTMLogo.svg" alt="EllcoTM лого" />
+         <img src="../assets/icons/logo.svg" alt="EllcoTM лого" />
          <span>Ellco TM</span>
       </div>
       <el-form ref="ruleFormRef" class="login__form" label-position="top" :rules="formRules" :model="formData">

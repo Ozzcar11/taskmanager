@@ -1,6 +1,7 @@
 <script setup>
 import { ElMessage } from "element-plus"
 import { RequestAPI } from "../../api/request"
+import { fileNameHandler } from '../../utils/fileNameURl'
 
 const props = defineProps({
    name: String,
@@ -38,7 +39,7 @@ async function handleClick(text) {
 
 <template>
    <el-button class="copy-btn" type="primary" size="small" @click="handleClick(copy)">
-      <img :src="`/src/assets/icons/${props.name}.svg`" />
+      <img :src="fileNameHandler(props.name)" />
    </el-button>
 </template>
 
