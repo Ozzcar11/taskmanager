@@ -120,7 +120,15 @@ requestUsers()
    }
 
    .el-transfer {
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
       margin-top: 20px;
+
+      &__buttons {
+         display: flex;
+         flex-wrap: nowrap;
+      }
 
       &-panel {
          background-color: $CodGray;
