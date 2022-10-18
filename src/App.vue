@@ -16,7 +16,7 @@ const route = useRoute();
 const notifHTML = (data) => {
    return `<div class="notification">
        <div class="notification__header">
-          <img src="${fileNameHandler(getStringStatus(data.status))}.svg" />
+          <img src="${fileNameHandler(getStringStatus(data.status))}" />
           <span class="${getStringStatus(data.status)}">${getStringStatus(
       data.status
    )}</span>

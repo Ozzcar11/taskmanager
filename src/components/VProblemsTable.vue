@@ -152,6 +152,6 @@ function getBitrixHref(item) {
 }
 
 .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
-   background-color: $Shark;
+   background-color: $Shark !important;
 }
 </style>

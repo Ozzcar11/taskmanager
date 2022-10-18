@@ -47,7 +47,7 @@ const props = defineProps({
    thead .el-table__cell {
       color: $Picton;
       font-weight: 700;
-      background-color: $CodGray;
+      background-color: $CodGray !important;
    }
 
    .el-table__cell {
@@ -85,6 +85,6 @@ const props = defineProps({
 }
 
 .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
-   background-color: $Shark;
+   background-color: $Shark !important;
 }
 </style>
