@@ -1,40 +1,42 @@
-import { defineStore } from "pinia"
-import { AuthAPI } from "@/api/auth"
+import { defineStore } from 'pinia'
+import { AuthAPI } from '@/api/auth'
+import { getStringRole } from '@/utils/getStringRole'
 
-export const useAuthStore = defineStore("auth", {
+export const useAuthStore = defineStore('auth', {
   state: () => {
     return {
-      token: localStorage.getItem("token"),
-      userRole: localStorage.getItem("userRole")
+      token: localStorage.getItem('token'),
+      userRole: localStorage.getItem('userRole')
     }
   },
-  actions: { 
+  actions: {
     async login(body) {
       try {
-         const res = await AuthAPI.login(body)
-         const data = res.data
-         const thisStore = useAuthStore()
-         thisStore.setToken(data.token)
-         thisStore.setRole(data.role)
+        const res = await AuthAPI.login(body)
+        const data = res.data
+        this.setToken(data.token)
+        this.setRole(data.role)
       } catch (e) {
-         throw e
+        throw e
       }
     },
     async logout() {
       await AuthAPI.logout(this.token)
-      localStorage.removeItem("token")
-      localStorage.removeItem("userRole")
+      localStorage.removeItem('token')
+      localStorage.removeItem('userRole')
     },
     setToken(token) {
       this.token = token
-      localStorage.setItem("token", token)
+      localStorage.setItem('token', token)
     },
     setRole(role) {
-      localStorage.setItem("userRole", ["Администратор", "Пользователь"].find((item, index) => index == role))
+      const stringRole = getStringRole(role)
+      this.userRole = stringRole
+      localStorage.setItem('userRole', stringRole)
     }
   },
   getters: {
-   getToken: (state) => state.token,
-   getRole: (state) => state.userRole
+    getToken: (state) => state.token,
+    getRole: (state) => state.userRole
   }
 })

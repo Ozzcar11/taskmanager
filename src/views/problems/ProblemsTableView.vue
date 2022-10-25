@@ -11,14 +11,18 @@ const notificationStore = useNotificationStore()
 
 const tableHeadline = ["Host", "Hostname", "Problem", "Status", "Age", "Date"]
 
-const requestDate = ref({
-   createDate: 0,
-   limit: 30,
-   status: 0,
-   problemId: 0
-})
-
 const filterStatus = ref(0)
+
+const defaultRequest = () => {
+   return {
+      createDate: 0,
+      limit: 30,
+      status: filterStatus.value,
+      problemId: 0
+   }
+}
+
+const requestDate = ref(defaultRequest())
 
 let tableData = ref([])
 let countAll = ref(1)
@@ -27,6 +31,7 @@ async function requestProblems() {
    const res = await RequestAPI.scrollProblems(
       JSON.stringify(requestDate.value)
    )
+
    const data = res.data
    if (data.counts === null) return
    const lastEl = data.problemsInformation.at(-1)
@@ -39,8 +44,7 @@ async function requestProblems() {
 watch(() => notificationStore.getWsData, (value) => {
    switch (value.socketType) {
       case 1:
-         tableData.value = []
-         requestProblems()
+         tableData.value.unshift(value)
          break
       case 2:
          tableData.value = tableData.value.filter(item => item.id !== value.id)
@@ -56,27 +60,19 @@ watch(filterStatus, value => {
    if (value === requestDate.value.status) return
    tableData.value = []
    countAll.value = 1
-   requestDate.value = {
-      createDate: 0,
-      limit: 30,
-      status: filterStatus.value,
-      problemId: 0
-   }
+   requestDate.value = defaultRequest()
    requestProblems()
 })
 
 async function searchProblems(search) {
    if (search === '') {
+      notificationStore.setSearchStatus(false)
       tableData.value = []
-      requestDate.value = {
-         createDate: 0,
-         limit: 30,
-         status: filterStatus.value,
-         problemId: 0
-      }
+      requestDate.value = defaultRequest()
       requestProblems()
       return
    }
+   notificationStore.setSearchStatus(true)
    const res = await RequestAPI.search(JSON.stringify({
       status: requestDate.value.status,
       search

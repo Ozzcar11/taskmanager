@@ -8,7 +8,7 @@ import TheHeader from "@/components/TheHeader.vue"
 import VUsersTable from "@/components/VUsersTable.vue";
 import { ElMessage } from "element-plus";
 
-const tableHeadline = ['Ник', "Имя", "Отчество", "Роль"]
+const tableHeadline = ['Ник', "Имя", "Фамилия", "Роль"]
 
 let tableData = ref([])
 

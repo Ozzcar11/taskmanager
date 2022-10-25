@@ -11,7 +11,7 @@ const createUserForm = reactive({
    username: "",
    password: "",
    role: null,
-   middleName: "",
+   surname: "",
 })
 
 const rules = reactive({
@@ -63,7 +63,7 @@ const rules = reactive({
          trigger: "blur",
       }
    ],
-   middleName: [
+   surname: [
       {
          required: true,
          message: "Это поле обязательно",
@@ -122,8 +122,8 @@ const submitForm = async (formEl) => {
          <el-form-item class="create-user__item" label="Имя" prop="name">
             <el-input v-model="createUserForm.name" />
          </el-form-item>
-         <el-form-item class="create-user__item" label="Отчество" prop="middleName">
-            <el-input v-model="createUserForm.middleName" />
+         <el-form-item class="create-user__item" label="Фамилия" prop="surname">
+            <el-input v-model="createUserForm.surname" />
          </el-form-item>
          <el-form-item class="create-user__item" style="margin-bottom: 100px" label="Роль пользователя" prop="role">
             <el-select v-model="createUserForm.role" placeholder="Выберите роль">

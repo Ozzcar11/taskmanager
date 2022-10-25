@@ -37,28 +37,18 @@ const notifHTML = (data) => {
 };
 
 soketInstance.on("notification", async (data) => {
-   if (
-      notificationStore.getFilterStatus === data.status ||
-      notificationStore.getFilterStatus == 0
-   ) {
-      notificationStore.setWsData(data);
-      filterStore.setFilter({
-         total: data.total,
-         success: data.success,
-         warning: data.warning,
-         error: data.error,
-      });
-      if (
-         notificationStore.getNotificationStatus &&
-         data.socketType !== 3 &&
-         route.path === "/"
-      ) {
-         ElNotification({
-            dangerouslyUseHTMLString: true,
-            message: notifHTML(data),
-            position: "bottom-right",
-            offset: 50,
-         });
+   if (notificationStore.getFilterStatus === data.status || notificationStore.getFilterStatus == 0) {
+      if (!notificationStore.getSearchStatus) {
+         notificationStore.setWsData(data);
+         filterStore.setFilter(data.count);
+         if (data.socketType !== 3 && route.path === "/") {
+            ElNotification({
+               dangerouslyUseHTMLString: true,
+               message: notifHTML(data),
+               position: "bottom-right",
+               offset: 50,
+            });
+         }
       }
    }
 });

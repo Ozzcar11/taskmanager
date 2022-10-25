@@ -40,7 +40,9 @@ const authStore = useAuthStore()
 //    return filteredMenuItems
 // })
 
-let userRole = computed(() => authStore.getRole) 
+let userRole = computed(() => {
+   return available.value.filter(filterItem => filterItem.enableFor.find(item => item == authStore.getRole))
+})
 
 const available = ref([
    {
@@ -65,15 +67,11 @@ const available = ref([
       enableFor: ["Администратор"]
    },
 ])
-
-watch(userRole, () => {
-   available.value = available.value.filter(filterItem => filterItem.enableFor.find(item => item == userRole.value))
-})
 </script>
 
 <template>
    <el-menu :default-active="route.path" :collapse="isCollapse" class="aside__menu menu" :router="true">
-      <el-menu-item v-for="item in available" :key="item.id" class="menu__item" :index="item.route" :route="item.route">
+      <el-menu-item v-for="item in userRole" :key="item.id" class="menu__item" :index="item.route" :route="item.route">
          <el-icon>
             <component :is='item.icon' />
          </el-icon>

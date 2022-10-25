@@ -155,3 +155,4 @@ function getBitrixHref(item) {
    background-color: $Shark !important;
 }
 </style>
+

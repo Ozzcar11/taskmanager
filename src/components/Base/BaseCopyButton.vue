@@ -28,7 +28,6 @@ async function handleClick(text) {
          })
       )
       const data = res.data
-      console.log(data);
       window.open(
          `https://glaber.ellco.ru/zabbix.php?action=map.view&sysmapid=${data.sysmapId}&search_selementid=${data.selementId}`,
          "_blank"
