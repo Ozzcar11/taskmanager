@@ -52,6 +52,9 @@ watch(() => notificationStore.getWsData, (value) => {
          break
       case 3:
          tableData.value = tableData.value.filter(item => item.id !== value.id)
+         requestDate.value.limit = 1
+         requestProblems(requestDate.value)
+         requestDate.value.limit = 30
          break
    }
 }, { deep: true })
