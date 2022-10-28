@@ -7,6 +7,7 @@ import { ElNotification } from "element-plus";
 import { getStringStatus } from "@/utils/getStringStatus";
 import { formatTimeDate, formatDaysDate } from "@/utils/formatDate";
 import { fileNameHandler } from '@/utils/fileNameURl'
+import { RequestAPI } from '@/api/request'
 
 const notificationStore = useNotificationStore();
 const filterStore = useFiltersStore();
@@ -40,7 +41,8 @@ soketInstance.on("notification", async (data) => {
    if (notificationStore.getFilterStatus === data.status || notificationStore.getFilterStatus == 0) {
       if (!notificationStore.getSearchStatus) {
          notificationStore.setWsData(data);
-         filterStore.setFilter(data.count);
+         const res = await RequestAPI.countProblems()
+         filterStore.setFilter(res.data.counts);
          if (data.socketType !== 3 && route.path === "/" && notificationStore.getNotificationStatus) {
             ElNotification({
                dangerouslyUseHTMLString: true,

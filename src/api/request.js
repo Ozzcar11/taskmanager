@@ -1,19 +1,19 @@
-import { DefaultAPIInstance } from "../utils/axios"
+import { DefaultAPIInstance } from '../utils/axios'
 
 export const RequestAPI = {
   showMap(body) {
-    return DefaultAPIInstance.post("/show-map", body)
+    return DefaultAPIInstance.post('/show-map', body)
   },
   countProblems() {
-    return DefaultAPIInstance.post("/problems/show-counts")
+    return DefaultAPIInstance.post('/problems/show-counts')
   },
   scrollProblems(body) {
-    return DefaultAPIInstance.post("/problems/scrolling", body)
+    return DefaultAPIInstance.post('/problems/scrolling', body)
   },
   users(body) {
-    return DefaultAPIInstance.post("/users/show", body)
+    return DefaultAPIInstance.post('/users/show', body)
   },
   search(body) {
-    return DefaultAPIInstance.post("/problems/search", body)
+    return DefaultAPIInstance.post('/problems/search', body)
   }
 }
