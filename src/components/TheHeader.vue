@@ -14,7 +14,6 @@ const props = defineProps({
 const notificationStore = useNotificationStore()
 
 const notification = ref(getBoolean(localStorage.getItem('notificationStatus')) ?? true)
-
 function notificationHandler() {
    notification.value = !notification.value
    localStorage.setItem('notificationStatus', notification.value)
