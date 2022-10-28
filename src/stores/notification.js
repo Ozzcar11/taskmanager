@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export const useNotificationStore = defineStore('notification', {
   state: () => {
     return {
-      notificationStatus: true,
+      notificationStatus: null,
       wsData: {},
       filterStatus: 0,
       searchStatus: false

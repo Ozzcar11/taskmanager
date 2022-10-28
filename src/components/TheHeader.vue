@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import { Search } from "@element-plus/icons-vue"
 import { RouterLink } from "vue-router"
 import { useNotificationStore } from '@/stores/notification'
+import getBoolean from '@/utils/getBooleanFromSting'
 
 const emit = defineEmits()
 
@@ -12,7 +13,12 @@ const props = defineProps({
 
 const notificationStore = useNotificationStore()
 
-const notification = ref(true)
+const notification = ref(getBoolean(localStorage.getItem('notificationStatus')) ?? true)
+
+function notificationHandler() {
+   notification.value = !notification.value
+   localStorage.setItem('notificationStatus', notification.value)
+}
 
 watch(notification, (val) => {
    notificationStore.setNotificationStatus(val)
@@ -31,7 +37,7 @@ watch(search, (val) => {
          <template v-if="!props.create">
             <el-input v-model="search" @input="emit('searchProblems', search)" class="header__search"
                placeholder="Поиск" :prefix-icon="Search" />
-            <el-button class="header__notification" @click="notification = !notification">
+            <el-button class="header__notification" @click="notificationHandler">
                <el-icon size="20px">
                   <Bell v-if="notification" />
                   <MuteNotification v-else />

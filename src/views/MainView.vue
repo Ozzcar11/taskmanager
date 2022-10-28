@@ -6,16 +6,24 @@ import AppLogo from "@/components/App/AppLogo.vue"
 import AppAsideMenu from "@/components/App/AppAsideMenu.vue"
 import AppAsideFooter from "@/components/App/AppAsideFooter.vue"
 
-const isCollapse = ref(false)
+import getBoolean from '@/utils/getBooleanFromSting'
+
+const isCollapse = ref(getBoolean(localStorage.getItem('isCollapse')) ?? false)
+
+
+function collapseHandler() {
+   isCollapse.value = !isCollapse.value
+   localStorage.setItem('isCollapse', isCollapse.value)
+}
 </script>
 
 <template>
    <el-container style="height: 100vh">
       <el-aside class="aside" :class="{ aside__collapsed: isCollapse }" width="260px">
-         <AppLogo :isCollapse="isCollapse" />
-         <AppAsideMenu :isCollapse="isCollapse" />
-         <AppAsideFooter :isCollapse="isCollapse" />
-         <el-button class="aside__collapse-btn aside__button" @click="isCollapse = !isCollapse">
+         <AppLogo :isCollapse="!!isCollapse" />
+         <AppAsideMenu :isCollapse="!!isCollapse" />
+         <AppAsideFooter :isCollapse="!!isCollapse" />
+         <el-button class="aside__collapse-btn aside__button" @click="collapseHandler">
             <img src="../assets/icons/arrow.svg" alt="" />
          </el-button>
       </el-aside>
