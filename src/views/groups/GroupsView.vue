@@ -87,7 +87,7 @@ requestGroups()
    height: 500px;
 
    &__container {
-      height: 370px;
+      height: 370px !important;
 
       & .el-scrollbar__view {
          display: flex;

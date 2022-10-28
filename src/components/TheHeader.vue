@@ -67,7 +67,7 @@ watch(search, (val) => {
    }
 
    &__search {
-      width: 290px;
+      width: 290px !important;
       margin-right: 20px;
 
       input {
