@@ -15,7 +15,7 @@ let allProblems = computed(() => {
 
 async function getProblems() {
    const res = await RequestAPI.countProblems()
-   filterStore.setFilter(res.data)
+   filterStore.setFilter(res.data.counts)
 }
 
 function emitStatusAndRefreshTable(status) {
