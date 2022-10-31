@@ -1,7 +1,7 @@
 <script setup>
 import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
 import { formatDate, formatResolvedDate } from '@/utils/formatDate'
-import { getStringStatus } from '@/utils/getStringStatus'
+import { getStringStatus, getStringStatusRU } from '@/utils/getStringStatus'
 import { fileNameHandler } from '@/utils/fileNameURl'
 import BaseCopyButton from "./Base/BaseCopyButton.vue"
 
@@ -18,13 +18,13 @@ function getBitrixHref(item) {
 <template>
    <el-table class="main-table" :data="props.tableData" empty-text="No such information"
       style="width: 100%; height: 100%;" table-layout="auto" v-el-table-infinite-scroll="() => $emit('lazyLoad')">
-      <el-table-column prop="host" label="Host">
+      <el-table-column prop="host" label="Хост">
          <template #default="scope">
             <span class="main-table__text">{{ scope.row.host }}</span>
             <BaseCopyButton name="copy" :copy="scope.row.host" />
          </template>
       </el-table-column>
-      <el-table-column prop="host_name" label="Hostname">
+      <el-table-column prop="host_name" label="Имя хоста">
          <template #default="scope">
             <span class="main-table__text">{{ scope.row.hostname }}</span>
             <div class="main-table__btn-container">
@@ -33,22 +33,22 @@ function getBitrixHref(item) {
             </div>
          </template>
       </el-table-column>
-      <el-table-column prop="status" label="Status">
+      <el-table-column prop="status" label="Статус">
          <template #default="scope">
             <div class="main-table__btn-container">
                <img :src="fileNameHandler(getStringStatus(scope.row.status))" />
                <span class="main-table__status" :class="getStringStatus(scope.row.status)">
-                  {{ getStringStatus(scope.row.status) }}
+                  {{ getStringStatusRU(scope.row.status) }}
                </span>
             </div>
          </template>
       </el-table-column>
-      <el-table-column prop="resolvedDate" label="Age">
+      <el-table-column prop="resolvedDate" label="Продолжительность">
          <template #default="scope">
-            {{ formatResolvedDate(scope.row.createDate ,scope.row.resolvedDate) }}
+            {{ formatResolvedDate(scope.row.createDate, scope.row.resolvedDate) }}
          </template>
       </el-table-column>
-      <el-table-column prop="createDate" label="Date">
+      <el-table-column prop="createDate" label="Дата">
          <template #default="scope">
             {{ formatDate(scope.row.createDate) }}
          </template>
@@ -113,7 +113,6 @@ function getBitrixHref(item) {
 
    &__status {
       margin-left: 10px;
-      text-transform: capitalize;
       font-weight: 700;
 
       &.error {

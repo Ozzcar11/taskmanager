@@ -4,7 +4,7 @@ import { soketInstance } from "@/utils/socketio";
 import { useNotificationStore } from "@/stores/notification";
 import { useFiltersStore } from "@/stores/statusFilter";
 import { ElNotification } from "element-plus";
-import { getStringStatus } from "@/utils/getStringStatus";
+import { getStringStatus, getStringStatusRU } from "@/utils/getStringStatus";
 import { formatTimeDate, formatDaysDate } from "@/utils/formatDate";
 import { fileNameHandler } from '@/utils/fileNameURl'
 import { RequestAPI } from '@/api/request'
@@ -18,21 +18,21 @@ const notifHTML = (data) => {
    return `<div class="notification">
        <div class="notification__header">
           <img src="${fileNameHandler(getStringStatus(data.status))}" />
-          <span class="${getStringStatus(data.status)}">${getStringStatus(
+          <span class="${getStringStatus(data.status)}">${getStringStatusRU(
       data.status
    )}</span>
        </div>
        <div class="notification__body">
-         <p>Problem ${data.status == 3
-         ? `resolved at ${formatTimeDate(
+         <p>Проблема ${data.status == 3
+         ? `решена в ${formatTimeDate(
             data.resolvedDate
-         )} on ${formatDaysDate(data.resolvedDate)}`
-         : `started at ${formatTimeDate(
+         )} ${formatDaysDate(data.resolvedDate)}`
+         : `началась в ${formatTimeDate(
             data.createDate
-         )} on ${formatDaysDate(data.createDate)}`
+         )} ${formatDaysDate(data.createDate)}`
       }</p>
-         <p>Host ${data.host}</p>
-         <p>Hostname ${data.hostname}</p>
+         <p>Хост: ${data.host}</p>
+         <p>Имя хоста: ${data.hostname}</p>
        </div>
    </div>`;
 };
@@ -82,7 +82,6 @@ body {
 
          span {
             margin: 2px 0px 0px 10px;
-            text-transform: capitalize;
          }
       }
 

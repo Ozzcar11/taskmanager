@@ -30,7 +30,7 @@ watch(search, (val) => {
 })
 </script>
 
-<template>
+<template>  
    <el-header class="header">
       <div class="header__container">
          <template v-if="!props.create">

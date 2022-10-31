@@ -1,8 +1,10 @@
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import 'dayjs/locale/ru'
 dayjs.extend(utc)
 dayjs.extend(timezone)
+dayjs.locale('ru')
 
 dayjs.tz.setDefault('Atlantic/Canary')
 
@@ -32,6 +34,6 @@ export function formatDaysDate(date) {
 
 function formatWithoutFirstDay(time) {
   return `${
-    time.format('D') - 1 ? time.format('D') - 1 + ' d. ' : ''
+    time.format('D') - 1 ? time.format('D') - 1 + ' д. ' : ''
   } ${time.format('HH:mm:ss')}`
 }
