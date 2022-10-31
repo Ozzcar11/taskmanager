@@ -73,7 +73,6 @@ const props = defineProps({
 
    &__status {
       margin-left: 10px;
-      text-transform: capitalize;
       font-weight: 700;
    }
 
