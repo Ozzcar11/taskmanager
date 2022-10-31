@@ -112,6 +112,5 @@ async function searchProblems(search) {
    display: flex;
    align-items: center;
    background-color: $CodGray;
-
 }
 </style>
