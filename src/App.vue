@@ -86,6 +86,8 @@ body {
       }
 
       span {
+         white-space: pre-wrap;
+
          &.error {
             color: rgb(226, 85, 85);
          }
