@@ -114,6 +114,7 @@ function getBitrixHref(item) {
    &__status {
       margin-left: 10px;
       font-weight: 700;
+      white-space: pre-wrap;
 
       &.error {
          color: rgb(226, 85, 85);
