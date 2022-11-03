@@ -25,11 +25,13 @@ const transferData = ref([])
 const currentUserId = ref(null)
 
 async function editUser(userId) {
+   transferValue.value = []
+   transferData.value = []
    const res = await UserAPI.groups(JSON.stringify({ userId }))
    const data = res.data
    currentUserId.value = userId
    transferData.value = data.exclusiveInformation ?? []
-   if (data.inclusiveInformation) {
+   if (data.inclusiveInformation !== []) {
       transferData.value.push(...data.inclusiveInformation)
       for (let item of data.inclusiveInformation) transferValue.value.push(item.key)
    }
@@ -79,7 +81,7 @@ requestUsers()
       </el-footer>
    </el-container>
    <el-dialog class="user-transfer" v-model="dialogVisible" title="Редактирование" width="32%">
-      <el-transfer v-model="transferValue" :data="transferData" :titles="['Неактивные','Активные']"
+      <el-transfer v-model="transferValue" :data="transferData" :titles="['Неактивные', 'Активные']"
          @change="editUserGroups" />
       <template #footer>
          <el-button class="user-transfer__delete" type="danger" size="default" plain @click="deleteUser()">Удалить
