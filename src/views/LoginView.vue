@@ -3,6 +3,7 @@ import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { useAuthStore } from "@/stores/login"
 import { ElMessage } from 'element-plus'
+import codesObj from '@/utils/errorCodeToString'
 
 const router = useRouter()
 
@@ -18,6 +19,7 @@ const formRules = ref({
    ],
    password: [
       { required: true, message: "Пожалуйста введите пароль", trigger: "blur" },
+      { min: 8, message: "Минимальная длина 8 символа", trigger: "blur" }
    ],
 })
 
@@ -32,7 +34,7 @@ const submitForm = async (formEl) => {
             await authStore.login(JSON.stringify(formData.value))
             router.push('/')
          } catch (e) {
-            ElMessage.error(e)
+            ElMessage.error(codesObj[e.response.data.code])
          }
       } else {
          console.log("error", fields)
@@ -50,10 +52,11 @@ const submitForm = async (formEl) => {
       <el-form ref="ruleFormRef" class="login__form" label-position="top" :rules="formRules" :model="formData">
          <h1 class="login__headline">Авторизация</h1>
          <el-form-item class="login__input" label="Логин" prop="username">
-            <el-input placeholder="Логин" v-model="formData.username" />
+            <el-input placeholder="Логин" v-model="formData.username" @keydown.enter="submitForm(ruleFormRef)" />
          </el-form-item>
          <el-form-item class="login__input" label="Пароль" prop="password">
-            <el-input placeholder="Пароль" v-model="formData.password" show-password />
+            <el-input placeholder="Пароль" v-model="formData.password" @keydown.enter="submitForm(ruleFormRef)"
+               show-password />
          </el-form-item>
          <el-button style="margin-top: 40px" type="primary" size="large" @click="submitForm(ruleFormRef)">Войти
          </el-button>

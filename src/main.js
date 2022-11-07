@@ -19,5 +19,5 @@ app.use(router)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
-// import 'element-plus/dist/index.css'
+import 'element-plus/dist/index.css'
 app.mount('#app')
