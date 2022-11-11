@@ -49,6 +49,7 @@ soketInstance.on("notification", async (data) => {
                message: notifHTML(data),
                position: "bottom-right",
                offset: 50,
+               duration: 10000,
             });
          }
       }
