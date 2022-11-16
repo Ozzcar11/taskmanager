@@ -13,6 +13,8 @@ function getBitrixHref(item) {
    if (!item[0]) return 'https://bitrix24.ellcom.ru/company/personal/user/0/tasks/task/edit/0/'
    return `https://bitrix24.ellcom.ru/company/personal/user/45354/tasks/task/view/${item[0]}/`
 }
+
+const userRole = localStorage.getItem('userRole')
 </script>
 
 <template>
@@ -74,7 +76,7 @@ function getBitrixHref(item) {
             </a>
          </template>
       </el-table-column>
-      <el-table-column width="100px">
+      <el-table-column v-if="userRole === 'Администратор'" width="100px">
          <template #default="scope">
             <el-button type="primary" size="default" class="no-button" @click="$emit('deleteProblem', scope.row.id)">
                <el-icon style="width: 16px; height: 16px">
