@@ -42,21 +42,7 @@ async function requestProblems() {
 }
 
 watch(() => notificationStore.getWsData, (value) => {
-   switch (value.socketType) {
-      case 1:
-         tableData.value.unshift(value)
-         break
-      case 2:
-         tableData.value = tableData.value.filter(item => item.id !== value.id)
-         tableData.value.unshift(value)
-         break
-      case 3:
-         tableData.value = tableData.value.filter(item => item.id !== value.id)
-         requestDate.value.limit = 1
-         requestProblems(requestDate.value)
-         requestDate.value.limit = 30
-         break
-   }
+   tableDataHandler(value.socketType, value.id, value)
 }, { deep: true })
 
 watch(filterStatus, value => {
@@ -66,6 +52,24 @@ watch(filterStatus, value => {
    requestDate.value = defaultRequest()
    requestProblems()
 })
+
+function tableDataHandler(action, id, value) {
+   switch (action) {
+      case 1:
+         tableData.value.unshift(value)
+         break
+      case 2:
+         tableData.value = tableData.value.filter(item => item.id !== id)
+         tableData.value.unshift(value)
+         break
+      case 3:
+         tableData.value = tableData.value.filter(item => item.id !== id)
+         requestDate.value.limit = 1
+         requestProblems(requestDate.value)
+         requestDate.value.limit = 30
+         break
+   }
+}
 
 async function searchProblems(search) {
    if (search === '') {
@@ -82,13 +86,19 @@ async function searchProblems(search) {
    }))
    tableData.value = [...res.data.problemsInformation]
 }
+
+function deleteProblem(problemId) {
+   tableDataHandler(3, problemId)
+   RequestAPI.deleteProblem(JSON.stringify({ problemId }))
+}
 </script>
 
 <template>
    <el-container>
       <TheHeader @searchProblems="searchProblems" />
       <el-main style="padding: 0">
-         <VProblemsTable :tableHeadline="tableHeadline" :tableData="tableData" @lazyLoad="requestProblems" />
+         <VProblemsTable :tableHeadline="tableHeadline" :tableData="tableData" @lazyLoad="requestProblems"
+            @deleteProblem="deleteProblem" />
       </el-main>
       <el-footer class="table-footer">
          <AppFilter v-model="filterStatus" />

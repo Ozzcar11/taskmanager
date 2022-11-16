@@ -15,5 +15,8 @@ export const RequestAPI = {
   },
   search(body) {
     return DefaultAPIInstance.post('/problems/search', body)
+  },
+  deleteProblem(body) {
+   return DefaultAPIInstance.post('/problems/delete', body)
   }
 }

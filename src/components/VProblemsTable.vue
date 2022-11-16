@@ -74,6 +74,15 @@ function getBitrixHref(item) {
             </a>
          </template>
       </el-table-column>
+      <el-table-column width="100px">
+         <template #default="scope">
+            <el-button type="primary" size="default" class="no-button" @click="$emit('deleteProblem', scope.row.id)">
+               <el-icon style="width: 16px; height: 16px">
+                  <DeleteFilled style="width: 16px; height: 16px" />
+               </el-icon>
+            </el-button>
+         </template>
+      </el-table-column>
    </el-table>
 </template>
 
@@ -153,6 +162,24 @@ function getBitrixHref(item) {
 
 .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
    background-color: $Shark !important;
+}
+
+.no-button {
+   border: none;
+   background-color: transparent;
+
+   &:active,
+   &:focus {
+      background-color: inherit;
+   }
+
+   &:hover {
+      background-color: #fff;
+
+      i {
+         color: rgb(226, 85, 85);
+      }
+   }
 }
 </style>
 
