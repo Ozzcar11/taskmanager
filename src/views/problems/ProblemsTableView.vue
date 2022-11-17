@@ -87,9 +87,11 @@ async function searchProblems(search) {
    tableData.value = [...res.data.problemsInformation]
 }
 
-function deleteProblem(problemId) {
+async function deleteProblem(problemId) {
    tableDataHandler(3, problemId)
    RequestAPI.deleteProblem(JSON.stringify({ problemId }))
+   const res = await RequestAPI.countProblems()
+   filterStore.setFilter(res.data.counts)
 }
 </script>
 
