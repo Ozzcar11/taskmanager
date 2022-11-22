@@ -6,8 +6,10 @@ import VProblemsTable from "@/components/VProblemsTable.vue"
 import AppFilter from "@/components/App/AppFilter.vue"
 import { RequestAPI } from "@/api/request"
 import { useNotificationStore } from '@/stores/notification'
+import { useFiltersStore } from '@/stores/statusFilter'
 
 const notificationStore = useNotificationStore()
+const filterStore = useFiltersStore()
 
 const tableHeadline = ["Host", "Hostname", "Problem", "Status", "Age", "Date"]
 
@@ -89,7 +91,7 @@ async function searchProblems(search) {
 
 async function deleteProblem(problemId) {
    tableDataHandler(3, problemId)
-   RequestAPI.deleteProblem(JSON.stringify({ problemId }))
+   await RequestAPI.deleteProblem(JSON.stringify({ problemId }))
    const res = await RequestAPI.countProblems()
    filterStore.setFilter(res.data.counts)
 }
