@@ -42,7 +42,7 @@ soketInstance.on("notification", async (data) => {
       if (!notificationStore.getSearchStatus) {
          notificationStore.setWsData(data);
          const res = await RequestAPI.countProblems()
-         filterStore.setFilter(res.data.counts);
+         filterStore.setFilter(res.data.countsgit);
          if (data.socketType !== 3 && route.path === "/" && notificationStore.getNotificationStatus) {
             ElNotification({
                dangerouslyUseHTMLString: true,
